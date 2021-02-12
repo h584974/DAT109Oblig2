@@ -37,4 +37,34 @@ public class RegnUtleiePris {
 			
 	}
 	
+	public static int regnPris(Utleiegruppe gruppe, Leiekontor utleiekontor, Leiekontor leveringskontor, int antallDager) {
+		
+		int totalpris = 0;
+		int dagspris = 0;
+			
+		switch(gruppe) {
+			
+			case A: dagspris = 250; break;
+				
+			case B: dagspris = 500; break;
+				
+			case C: dagspris = 750; break;
+				
+			case D: dagspris = 1000; break;
+				
+			default: dagspris = 0; break;
+				
+		}
+		
+		totalpris += dagspris * antallDager;
+			
+		if(utleiekontor.getKontornummer() == leveringskontor.getKontornummer()) {
+			return totalpris;
+		}
+		else {
+			return totalpris + returgebyr;
+		}
+			
+	}
+	
 }
