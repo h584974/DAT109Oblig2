@@ -1,9 +1,15 @@
 package aktorer;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import utils.Kundeliste;
 import utils.Leiekontorliste;
+import utils.RegnUtleiePris;
+import utils.Utleiegruppe;
 import utils.Addresse;
+import utils.AktivUtleieselskap;
 
 public class Utleieselskap {
 	
@@ -53,8 +59,23 @@ public class Utleieselskap {
 		return biler;
 	}
 
-	public Kunde loggInn(String navn) {
-		return kunder.stream().filter(k -> k.getFornavn().equalsIgnoreCase(navn)).findFirst().get();
+	public Kunde loggInn(String fornavn, String etternavn) {
+		return kunder.stream().filter(k -> k.getFornavn().equalsIgnoreCase(navn) && k.getEtternavn().equalsIgnoreCase(etternavn)).findFirst().get();
+	}
+	
+	public List<Utleiegruppe> sokLedigeBilgrupperOgVis(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
+		
+		List<Utleiegruppe> ledigeGrupper = biler.stream().filter(b -> b.isLedig()).map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
+		
+		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
+		
+		ledigeGrupper.forEach(g -> {
+			int pris = RegnUtleiePris.regnPris(g,utleiekontor,leveringskontor,antallDager);
+			System.out.println("Gruppe: " + g + "\nPris: " + pris + "kr\n");
+		});
+		
+		return ledigeGrupper;
+		
 	}
 
 }
