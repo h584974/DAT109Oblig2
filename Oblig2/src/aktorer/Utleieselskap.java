@@ -3,13 +3,11 @@ package aktorer;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import utils.Kundeliste;
 import utils.Leiekontorliste;
 import utils.RegnUtleiePris;
 import utils.Utleiegruppe;
 import utils.Addresse;
-import utils.AktivUtleieselskap;
 
 public class Utleieselskap {
 	

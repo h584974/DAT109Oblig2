@@ -16,7 +16,7 @@ public class Test {
 		long tidspunkt = 1000000L;
 		int antallDager = 7;
 		
-		Sokemotor.sokOgVis(utleiekontor, leveringskontor, dato, tidspunkt, antallDager);
+		selskap.sokLedigeBilgrupperOgVis(utleiekontor, leveringskontor, dato, tidspunkt, antallDager);
 		
 	}
 }
