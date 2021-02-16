@@ -10,8 +10,9 @@ public class Bil {
 	private String merke;
 	private String farge;
 	private boolean ledig;
+	private Leiekontor utleiekontor;
 	
-	public Bil(int registreringsnummer, int kilometerstand, Utleiegruppe utleiegruppe, String merke, String farge) {
+	public Bil(int registreringsnummer, int kilometerstand, Utleiegruppe utleiegruppe, String merke, String farge, Leiekontor utleiekontor) {
 		super();
 		this.registreringsnummer = registreringsnummer;
 		this.kilometerstand = kilometerstand;
@@ -19,6 +20,7 @@ public class Bil {
 		this.merke = merke;
 		this.farge = farge;
 		this.ledig = true;
+		this.utleiekontor = utleiekontor;
 	}
 
 	public int getRegistreringsnummer() {
@@ -67,6 +69,14 @@ public class Bil {
 
 	public void setLedig(boolean ledig) {
 		this.ledig = ledig;
+	}
+
+	public Leiekontor getUtleiekontor() {
+		return utleiekontor;
+	}
+
+	public void setUtleiekontor(Leiekontor utleiekontor) {
+		this.utleiekontor = utleiekontor;
 	}
 
 }

@@ -1,8 +1,11 @@
 package aktorer;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import dokumenter.Reservasjon;
 import utils.Kundeliste;
 import utils.Leiekontorliste;
 import utils.RegnUtleiePris;
@@ -63,7 +66,15 @@ public class Utleieselskap {
 	
 	public List<Utleiegruppe> sokLedigeBilgrupperOgVis(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
 		
-		List<Utleiegruppe> ledigeGrupper = biler.stream().filter(b -> b.isLedig()).map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
+		List<Reservasjon> reservasjoner = getAlleReservasjoner();
+		List<Bil> relevanteBiler = getBilerFraLeiekontor(utleiekontor);
+		List<Utleiegruppe> ledigeGrupper = new ArrayList<Utleiegruppe>();
+		
+		biler.forEach(b -> {
+			
+			List<Bil> 
+			
+		});
 		
 		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
 		
@@ -73,6 +84,19 @@ public class Utleieselskap {
 		});
 		
 		return ledigeGrupper;
+		
+	}
+	
+	private List<Reservasjon> getAlleReservasjoner() {
+		
+		return kunder.stream().filter(k -> k.harReservasjon()).map(k -> k.getReservasjon()).collect(Collectors.toList());
+		
+	}
+	
+	private List<Bil> getBilerFraLeiekontor(Leiekontor leiekontor) {
+		
+		// rot
+		
 		
 	}
 
