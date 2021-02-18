@@ -85,7 +85,7 @@ public class Bil {
 	
 	public boolean erReservert() {
 		
-		List<Reservasjon> reservasjoner = AktivUtleieselskap.selskap.getAlleReservasjoner();
+		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
 		
 		return reservasjoner.stream().anyMatch(r -> r.getBil().getRegistreringsnummer() == registreringsnummer);
 		

@@ -1,8 +1,12 @@
 package dokumenter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import aktorer.Bil;
 import aktorer.Leiekontor;
+import utils.Kundeliste;
 import utils.RegnUtleiePris;
 
 public class Reservasjon {
@@ -52,6 +56,12 @@ public class Reservasjon {
 
 	public int getPris() {
 		return pris;
+	}
+	
+	public static List<Reservasjon> getAlleReservasjoner() {
+		
+		return Kundeliste.kundeliste.stream().filter(k -> k.harReservasjon()).map(k -> k.getReservasjon()).collect(Collectors.toList());
+		
 	}
 	
 }

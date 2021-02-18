@@ -60,7 +60,6 @@ public class Utleieselskap {
 	
 	public List<Bil> sokBil(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
 		
-		List<Reservasjon> reservasjoner = getAlleReservasjoner();
 		List<Bil> ledigeBiler = getLedigeBiler(utleiekontor,leveringskontor,dato,tidspunkt,antallDager);
 ;		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
 		
@@ -75,17 +74,11 @@ public class Utleieselskap {
 		
 	}
 	
-	public List<Reservasjon> getAlleReservasjoner() {
-		
-		return kunder.stream().filter(k -> k.harReservasjon()).map(k -> k.getReservasjon()).collect(Collectors.toList());
-		
-	}
-	
 	private List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidpunkt, int antallDager) {
 		
 		List<Bil> biler = Billiste.billiste;
 		List<Bil> ledigeBiler = new ArrayList<Bil>();
-		List<Reservasjon> reservasjoner = getAlleReservasjoner();
+		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
 		
 		reservasjoner.forEach(r -> {
 			
