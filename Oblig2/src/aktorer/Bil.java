@@ -85,16 +85,10 @@ public class Bil {
 	
 	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidpunkt, int antallDager) {
 		
-		List<Bil> biler = new ArrayList<Bil>();
 		List<Bil> ledigeBiler = new ArrayList<Bil>();
 		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
-		List<Leiekontor> kontorer = AktivUtleieselskap.selskap.getLeiekontorer();
-		
-		kontorer.forEach(k -> {
 			
-			k.getBiler().forEach(b -> biler.add(b));
-			
-		});
+		utleiekontor.getBiler().stream().filter(b -> !b.erReservert()).forEach(b -> ledigeBiler.add(b));
 		
 		reservasjoner.forEach(r -> {
 			
@@ -124,8 +118,6 @@ public class Bil {
 			}
 			
 		});
-		
-		biler.stream().filter(b -> !b.erReservert()).forEach(b -> ledigeBiler.add(b));
 		
 		return ledigeBiler;
 		

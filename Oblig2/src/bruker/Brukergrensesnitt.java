@@ -9,6 +9,7 @@ import aktorer.Bil;
 import aktorer.Kunde;
 import aktorer.Leiekontor;
 import aktorer.Utleieselskap;
+import dokumenter.Reservasjon;
 import utils.AktivUtleieselskap;
 import utils.Utleiegruppe;
 
@@ -23,6 +24,8 @@ public class Brukergrensesnitt {
 		loggInn();
 		
 		reserverBil();
+
+		returnerBil();
 		
 		scanner.close();
 		
@@ -170,9 +173,16 @@ public class Brukergrensesnitt {
 			
 		}
 		
-		List<Bil> biler = selskap.sokBil(utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager);
+		List<Bil> biler = Bil.getLedigeBiler(utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager);
+		Reservasjon.skrivPris(biler, utleiekontor, leveringskontor, antallDager);
 		Bil bil = velgBil(biler);
-		selskap.reserverBil(kunde, bil, utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager);
+		
+		if(selskap.reserverBil(kunde, bil, utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager)) {
+			System.out.println("Bil ble reservert.");
+		}
+		else {
+			System.out.println("Det skjedde en feil, bil kunne ikke reserveres");
+		}
 		
 	}
 	
@@ -207,6 +217,59 @@ public class Brukergrensesnitt {
 		}
 		
 		return bil;
+		
+	}
+	
+	public void hentBil() {
+		
+		System.out.println("Skriv inn kredittkortnummer: ");
+		int kredittkort = -1;
+		while(kredittkort < 0) {
+			
+			try {
+				kredittkort = Integer.parseInt(scanner.next());
+			}
+			catch(NumberFormatException e) {}
+			
+			if(kredittkort < 0) {
+				System.out.println("Ugyldig kredittkortnummer, prøv igjen: ");
+			}
+			
+		}
+		
+		System.out.println("Velg klokkeslett for forventet returtidspunkt");
+		LocalTime forventetReturtidspunkt = null;
+		while(forventetReturtidspunkt == null) {
+			
+			try {
+				System.out.println("Time: ");
+				int time = Integer.parseInt(scanner.next());
+				System.out.println("Minutt: ");
+				int minutt = Integer.parseInt(scanner.next());
+				
+				forventetReturtidspunkt = LocalTime.of(time, minutt);
+			}
+			catch(Throwable e) {}
+			
+		}
+		
+		if(selskap.hentBil(kunde, kredittkort, kunde.getReservasjon().getUtleieDato().plusDays(kunde.getReservasjon().getAntallDager()), forventetReturtidspunkt)) {
+			System.out.println("Bil ble hentet.");
+		}
+		else {
+			System.out.println("Det skjedde en feil, bil kunne ikke hentes.");
+		}
+		
+	}
+	
+	private void returnerBil() {
+		
+		if(selskap.returnerBil(kunde)) {
+			System.out.println("Bil ble levert.");
+		}
+		else {
+			System.out.println("Det skjedde en feil, kunne ikke levere bil.");
+		}
 		
 	}
 

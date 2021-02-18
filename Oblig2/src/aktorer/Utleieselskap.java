@@ -4,13 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import dokumenter.Reservasjon;
 import dokumenter.Retur;
 import dokumenter.Utleie;
 import utils.Kundeliste;
 import utils.Leiekontorliste;
-import utils.Utleiegruppe;
 import utils.Addresse;
 
 public class Utleieselskap {
@@ -69,24 +67,6 @@ public class Utleieselskap {
 		
 	}
 	
-	public List<Bil> sokBil(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
-		
-		List<Bil> ledigeBiler = Bil.getLedigeBiler(utleiekontor,leveringskontor,dato,tidspunkt,antallDager);
-;		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
-		
-		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
-		
-		ledigeGrupper.forEach(g -> {
-			
-			int pris = Reservasjon.regnPris(g,utleiekontor,leveringskontor,antallDager);
-			System.out.println("Gruppe: " + g + "\nPris: " + pris + "kr\n");
-			
-		});
-		
-		return ledigeBiler;
-		
-	}
-	
 	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		if(kunde.harReservasjon()) {
@@ -125,6 +105,8 @@ public class Utleieselskap {
 		Retur retur = new Retur(reservasjon.getBil().getKilometerstand());
 		kunde.leggTilRetur(retur);
 		reservasjon.getLeveringkontor().leggTilBil(reservasjon.getBil());
+		kunde.setUtleie(null);
+		kunde.setReservasjon(null);
 		
 		return true;
 		
