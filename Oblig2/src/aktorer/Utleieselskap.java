@@ -3,9 +3,9 @@ package aktorer;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import dokumenter.Reservasjon;
 import utils.Kundeliste;
 import utils.Leiekontorliste;
-import utils.RegnUtleiePris;
 import utils.Utleiegruppe;
 import utils.Addresse;
 
@@ -64,12 +64,21 @@ public class Utleieselskap {
 		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
 		
 		ledigeGrupper.forEach(g -> {
-			int pris = RegnUtleiePris.regnPris(g,utleiekontor,leveringskontor,antallDager);
+			
+			int pris = Reservasjon.regnPris(g,utleiekontor,leveringskontor,antallDager);
 			System.out.println("Gruppe: " + g + "\nPris: " + pris + "kr\n");
+			
 		});
 		
 		return ledigeBiler;
 		
+	}
+	
+	public boolean reserverBil(Bil bil, Leiekontor utleiekontor, Leiekontor leveirngskontor, Date dato, long tidspunkt, int antallDager) {
+		
+		// TODO
+		
+		return false;
 	}
 
 }
