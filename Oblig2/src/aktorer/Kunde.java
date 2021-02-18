@@ -2,7 +2,6 @@ package aktorer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import dokumenter.Reservasjon;
 import dokumenter.Retur;
 import dokumenter.Utleie;

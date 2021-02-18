@@ -2,7 +2,6 @@ package aktorer;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import utils.Addresse;
 
 public class Leiekontor {

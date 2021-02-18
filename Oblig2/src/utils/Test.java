@@ -1,7 +1,6 @@
 package utils;
 
 import java.util.Date;
-
 import aktorer.Leiekontor;
 import aktorer.Utleieselskap;
 
@@ -16,7 +15,7 @@ public class Test {
 		long tidspunkt = 1000000L;
 		int antallDager = 7;
 		
-		selskap.sokLedigeBilgrupperOgVis(utleiekontor, leveringskontor, dato, tidspunkt, antallDager);
+		selskap.sokBil(utleiekontor, leveringskontor, dato, tidspunkt, antallDager);
 		
 	}
 }

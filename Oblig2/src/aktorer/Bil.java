@@ -3,10 +3,8 @@ package aktorer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import dokumenter.Reservasjon;
 import utils.AktivUtleieselskap;
-import utils.BilFactory;
 import utils.Utleiegruppe;
 
 public class Bil {

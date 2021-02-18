@@ -1,7 +1,6 @@
 package bruker;
 
 import java.util.Scanner;
-
 import aktorer.Kunde;
 import aktorer.Utleieselskap;
 import utils.AktivUtleieselskap;
