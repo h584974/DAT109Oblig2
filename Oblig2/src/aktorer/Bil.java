@@ -1,5 +1,9 @@
 package aktorer;
 
+import java.util.List;
+
+import dokumenter.Reservasjon;
+import utils.AktivUtleieselskap;
 import utils.Utleiegruppe;
 
 public class Bil {
@@ -78,5 +82,13 @@ public class Bil {
 	public void setUtleiekontor(Leiekontor utleiekontor) {
 		this.utleiekontor = utleiekontor;
 	}
-
+	
+	public boolean erReservert() {
+		
+		List<Reservasjon> reservasjoner = AktivUtleieselskap.selskap.getAlleReservasjoner();
+		
+		return reservasjoner.stream().anyMatch(r -> r.getBil().getRegistreringsnummer() == registreringsnummer);
+		
+	}
+	
 }

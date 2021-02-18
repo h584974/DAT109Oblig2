@@ -1,5 +1,8 @@
 package aktorer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import utils.Addresse;
 
 public class Leiekontor {
@@ -7,12 +10,14 @@ public class Leiekontor {
 	private int kontornummer;
 	private int telefonnummer;
 	private Addresse addresse;
+	private List<Bil> biler;
 	
 	public Leiekontor(int kontornummer, int telefonnummer, Addresse addresse) {
 		super();
 		this.kontornummer = kontornummer;
 		this.telefonnummer = telefonnummer;
 		this.addresse = addresse;
+		this.biler = new ArrayList<Bil>();
 	}
 
 	public int getKontornummer() {
@@ -37,6 +42,29 @@ public class Leiekontor {
 
 	public void setAddresse(Addresse addresse) {
 		this.addresse = addresse;
+	}
+	
+	public List<Bil> getBiler() {
+		return biler;
+	}
+	
+	public void leggTilBil(Bil bil) {
+		biler.add(bil);
+	}
+	
+	public void fjernBil(Bil bil) {
+		
+		int bilNr = bil.getRegistreringsnummer();
+		
+		for(int i = 0; i < biler.size(); i++) {
+			
+			if(biler.get(i).getKilometerstand() == bilNr) {
+				biler.remove(i);
+				break;
+			}
+			
+		}
+		
 	}
 
 }

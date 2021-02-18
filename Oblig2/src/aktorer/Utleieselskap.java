@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import dokumenter.Reservasjon;
 import utils.Kundeliste;
 import utils.Leiekontorliste;
@@ -19,7 +18,6 @@ public class Utleieselskap {
 	private Addresse firmaaddresse;
 	private List<Kunde> kunder = Kundeliste.kundeliste;
 	private List<Leiekontor> leiekontorer = Leiekontorliste.leiekontorliste;
-	private List<Bil> biler = Billiste.billiste;
 	
 	public Utleieselskap(String navn, int telefonnummer, Addresse firmaaddresse) {
 		super();
@@ -55,26 +53,16 @@ public class Utleieselskap {
 	public List<Leiekontor> getLeiekontorer() {
 		return leiekontorer;
 	}
-	
-	public List<Bil> getBiler() {
-		return biler;
-	}
 
 	public Kunde loggInn(String fornavn, String etternavn) {
 		return kunder.stream().filter(k -> k.getFornavn().equalsIgnoreCase(navn) && k.getEtternavn().equalsIgnoreCase(etternavn)).findFirst().get();
 	}
 	
-	public List<Utleiegruppe> sokLedigeBilgrupperOgVis(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
+	public List<Bil> sokBil(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
 		
 		List<Reservasjon> reservasjoner = getAlleReservasjoner();
-		List<Bil> relevanteBiler = getBilerFraLeiekontor(utleiekontor);
-		List<Utleiegruppe> ledigeGrupper = new ArrayList<Utleiegruppe>();
-		
-		biler.forEach(b -> {
-			
-			List<Bil> 
-			
-		});
+		List<Bil> ledigeBiler = getLedigeBiler(utleiekontor,leveringskontor,dato,tidspunkt,antallDager);
+;		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
 		
 		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
 		
@@ -83,21 +71,62 @@ public class Utleieselskap {
 			System.out.println("Gruppe: " + g + "\nPris: " + pris + "kr\n");
 		});
 		
-		return ledigeGrupper;
+		return ledigeBiler;
 		
 	}
 	
-	private List<Reservasjon> getAlleReservasjoner() {
+	public List<Reservasjon> getAlleReservasjoner() {
 		
 		return kunder.stream().filter(k -> k.harReservasjon()).map(k -> k.getReservasjon()).collect(Collectors.toList());
 		
 	}
 	
-	private List<Bil> getBilerFraLeiekontor(Leiekontor leiekontor) {
+	private List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidpunkt, int antallDager) {
 		
-		// rot
+		List<Bil> biler = Billiste.billiste;
+		List<Bil> ledigeBiler = new ArrayList<Bil>();
+		List<Reservasjon> reservasjoner = getAlleReservasjoner();
 		
+		reservasjoner.forEach(r -> {
+			
+			int datoforskjell = r.getUtleieDato().compareTo(dato);
+
+			if(r.getUtleieDato().before(dato)) {
+				
+				if(datoforskjell > r.getAntallDager()) {
+					
+					if(r.getLeveringkontor().getKontornummer() == utleiekontor.getKontornummer()) {
+						ledigeBiler.add(r.getBil());
+					}
+					
+				}
+				
+			}
+			else if(r.getUtleieDato().after(dato)) {
+				
+				if(datoforskjell > antallDager) {
+					
+					if(r.getUtleiekontor().getKontornummer() == leveringskontor.getKontornummer()) {
+						ledigeBiler.add(r.getBil());
+					}
+					
+				}
+				
+			}
+			
+		});
+		
+		biler.stream().filter(b -> !b.erReservert()).forEach(b -> ledigeBiler.add(b));
+		
+		return ledigeBiler;
 		
 	}
 
 }
+
+
+
+
+
+
+
