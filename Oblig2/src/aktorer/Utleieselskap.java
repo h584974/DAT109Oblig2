@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import dokumenter.Reservasjon;
+import dokumenter.Retur;
+import dokumenter.Utleie;
 import utils.Kundeliste;
 import utils.Leiekontorliste;
 import utils.Utleiegruppe;
@@ -74,11 +76,46 @@ public class Utleieselskap {
 		
 	}
 	
-	public boolean reserverBil(Bil bil, Leiekontor utleiekontor, Leiekontor leveirngskontor, Date dato, long tidspunkt, int antallDager) {
+	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveirngskontor, Date dato, long tidspunkt, int antallDager) {
 		
-		// TODO
+		if(kunde.harReservasjon()) {
+			return false;
+		}
 		
-		return false;
+		Reservasjon reservasjon = new Reservasjon(bil, dato, tidspunkt, antallDager, leveirngskontor, leveirngskontor);
+		kunde.setReservasjon(reservasjon);
+		
+		return true;
+		
+	}
+	
+	public boolean hentBil(Kunde kunde, int kredittkort, Date forventetReturdato, long forventetReturtidspunkt) {
+		
+		if(!kunde.harReservasjon()) {
+			return false;
+		}
+		
+		Reservasjon reservasjon = kunde.getReservasjon();
+		Utleie utleie = new Utleie(kredittkort, reservasjon.getBil().getKilometerstand(),forventetReturdato,forventetReturtidspunkt);
+		kunde.setUtleie(utleie);
+				
+		return true;
+		
+	}
+	
+	public boolean returnerBil(Kunde kunde) {
+		
+		if(!kunde.harUtleie()) {
+			return false;
+		}
+		
+		Reservasjon reservasjon = kunde.getReservasjon();
+		Date returdato = new Date();
+		Retur retur = new Retur(returdato,reservasjon.getBil().getKilometerstand());
+		kunde.leggTilRetur(retur);
+		
+		return true;
+		
 	}
 
 }
