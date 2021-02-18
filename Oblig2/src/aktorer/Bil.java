@@ -6,6 +6,7 @@ import java.util.List;
 
 import dokumenter.Reservasjon;
 import utils.AktivUtleieselskap;
+import utils.BilFactory;
 import utils.Utleiegruppe;
 
 public class Bil {
@@ -16,9 +17,8 @@ public class Bil {
 	private String merke;
 	private String farge;
 	private boolean ledig;
-	private Leiekontor utleiekontor;
 	
-	public Bil(int registreringsnummer, int kilometerstand, Utleiegruppe utleiegruppe, String merke, String farge, Leiekontor utleiekontor) {
+	public Bil(int registreringsnummer, int kilometerstand, Utleiegruppe utleiegruppe, String merke, String farge) {
 		super();
 		this.registreringsnummer = registreringsnummer;
 		this.kilometerstand = kilometerstand;
@@ -26,7 +26,6 @@ public class Bil {
 		this.merke = merke;
 		this.farge = farge;
 		this.ledig = true;
-		this.utleiekontor = utleiekontor;
 	}
 
 	public int getRegistreringsnummer() {
@@ -76,14 +75,6 @@ public class Bil {
 	public void setLedig(boolean ledig) {
 		this.ledig = ledig;
 	}
-
-	public Leiekontor getUtleiekontor() {
-		return utleiekontor;
-	}
-
-	public void setUtleiekontor(Leiekontor utleiekontor) {
-		this.utleiekontor = utleiekontor;
-	}
 	
 	public boolean erReservert() {
 		
@@ -95,9 +86,16 @@ public class Bil {
 	
 	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidpunkt, int antallDager) {
 		
-		List<Bil> biler = Billiste.billiste;
+		List<Bil> biler = new ArrayList<Bil>();
 		List<Bil> ledigeBiler = new ArrayList<Bil>();
 		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
+		List<Leiekontor> kontorer = AktivUtleieselskap.selskap.getLeiekontorer();
+		
+		kontorer.forEach(k -> {
+			
+			k.getBiler().forEach(b -> biler.add(b));
+			
+		});
 		
 		reservasjoner.forEach(r -> {
 			

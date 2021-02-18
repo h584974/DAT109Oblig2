@@ -98,6 +98,7 @@ public class Utleieselskap {
 		Reservasjon reservasjon = kunde.getReservasjon();
 		Utleie utleie = new Utleie(kredittkort, reservasjon.getBil().getKilometerstand(),forventetReturdato,forventetReturtidspunkt);
 		kunde.setUtleie(utleie);
+		reservasjon.getUtleiekontor().fjernBil(reservasjon.getBil());
 				
 		return true;
 		
@@ -113,6 +114,7 @@ public class Utleieselskap {
 		Date returdato = new Date();
 		Retur retur = new Retur(returdato,reservasjon.getBil().getKilometerstand());
 		kunde.leggTilRetur(retur);
+		reservasjon.getLeveringkontor().leggTilBil(reservasjon.getBil());
 		
 		return true;
 		
