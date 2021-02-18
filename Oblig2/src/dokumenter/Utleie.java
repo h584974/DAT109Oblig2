@@ -1,23 +1,24 @@
 package dokumenter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Utleie {
 	
 	private int kredittkort;
 	private int kilometerstand;
-	private Date utleieDato;
-	private Date forventetReturdato;
-	private long utleieTidspunkt;
-	private long forventetReturTidspunkt;
+	private LocalDate utleieDato;
+	private LocalDate forventetReturdato;
+	private LocalTime utleieTidspunkt;
+	private LocalTime forventetReturTidspunkt;
 	
-	public Utleie(int kredittkort, int kilometerstand, Date forventetReturdato, long forventetReturTidspunkt) {
+	public Utleie(int kredittkort, int kilometerstand, LocalDate forventetReturdato, LocalTime forventetReturTidspunkt) {
 		super();
 		this.kredittkort = kredittkort;
 		this.kilometerstand = kilometerstand;
-		this.utleieDato = new Date();
+		this.utleieDato = LocalDate.now();
 		this.forventetReturdato = forventetReturdato;
-		this.utleieTidspunkt = System.currentTimeMillis();
+		this.utleieTidspunkt = LocalTime.now();
 		this.forventetReturTidspunkt = forventetReturTidspunkt;
 	}
 
@@ -29,19 +30,19 @@ public class Utleie {
 		return kilometerstand;
 	}
 
-	public Date getUtleieDato() {
+	public LocalDate getUtleieDato() {
 		return utleieDato;
 	}
 
-	public Date getForventetReturdato() {
+	public LocalDate getForventetReturdato() {
 		return forventetReturdato;
 	}
 
-	public long getUtleieTidspunkt() {
+	public LocalTime getUtleieTidspunkt() {
 		return utleieTidspunkt;
 	}
 
-	public long getForventetReturTidspunkt() {
+	public LocalTime getForventetReturTidspunkt() {
 		return forventetReturTidspunkt;
 	}
 

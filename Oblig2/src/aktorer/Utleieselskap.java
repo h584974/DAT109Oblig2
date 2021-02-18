@@ -1,7 +1,9 @@
 package aktorer;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import dokumenter.Reservasjon;
 import dokumenter.Retur;
@@ -55,10 +57,19 @@ public class Utleieselskap {
 	}
 
 	public Kunde loggInn(String fornavn, String etternavn) {
-		return kunder.stream().filter(k -> k.getFornavn().equalsIgnoreCase(navn) && k.getEtternavn().equalsIgnoreCase(etternavn)).findFirst().get();
+		
+		Kunde kunde = null;
+		
+		try {
+			return kunder.stream().filter(k -> k.getFornavn().equalsIgnoreCase(fornavn) && k.getEtternavn().equalsIgnoreCase(etternavn)).findFirst().get();
+		}
+		catch(NoSuchElementException e) {}
+		
+		return kunde;
+		
 	}
 	
-	public List<Bil> sokBil(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
+	public List<Bil> sokBil(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		List<Bil> ledigeBiler = Bil.getLedigeBiler(utleiekontor,leveringskontor,dato,tidspunkt,antallDager);
 ;		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
@@ -76,7 +87,7 @@ public class Utleieselskap {
 		
 	}
 	
-	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveirngskontor, Date dato, long tidspunkt, int antallDager) {
+	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveirngskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		if(kunde.harReservasjon()) {
 			return false;
@@ -89,7 +100,7 @@ public class Utleieselskap {
 		
 	}
 	
-	public boolean hentBil(Kunde kunde, int kredittkort, Date forventetReturdato, long forventetReturtidspunkt) {
+	public boolean hentBil(Kunde kunde, int kredittkort, LocalDate forventetReturdato, LocalTime forventetReturtidspunkt) {
 		
 		if(!kunde.harReservasjon()) {
 			return false;
@@ -111,8 +122,7 @@ public class Utleieselskap {
 		}
 		
 		Reservasjon reservasjon = kunde.getReservasjon();
-		Date returdato = new Date();
-		Retur retur = new Retur(returdato,reservasjon.getBil().getKilometerstand());
+		Retur retur = new Retur(reservasjon.getBil().getKilometerstand());
 		kunde.leggTilRetur(retur);
 		reservasjon.getLeveringkontor().leggTilBil(reservasjon.getBil());
 		

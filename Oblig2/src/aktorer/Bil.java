@@ -1,7 +1,8 @@
 package aktorer;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import dokumenter.Reservasjon;
 import utils.AktivUtleieselskap;
@@ -82,7 +83,7 @@ public class Bil {
 		
 	}
 	
-	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidpunkt, int antallDager) {
+	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidpunkt, int antallDager) {
 		
 		List<Bil> biler = new ArrayList<Bil>();
 		List<Bil> ledigeBiler = new ArrayList<Bil>();
@@ -97,9 +98,9 @@ public class Bil {
 		
 		reservasjoner.forEach(r -> {
 			
-			int datoforskjell = r.getUtleieDato().compareTo(dato);
+			int datoforskjell = Math.abs(r.getUtleieDato().compareTo(dato));
 
-			if(r.getUtleieDato().before(dato)) {
+			if(r.getUtleieDato().isBefore(dato)) {
 				
 				if(datoforskjell > r.getAntallDager()) {
 					
@@ -110,7 +111,7 @@ public class Bil {
 				}
 				
 			}
-			else if(r.getUtleieDato().after(dato)) {
+			else if(r.getUtleieDato().isAfter(dato)) {
 				
 				if(datoforskjell > antallDager) {
 					

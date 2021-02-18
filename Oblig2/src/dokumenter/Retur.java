@@ -1,25 +1,26 @@
 package dokumenter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Retur {
 	
-	private Date returdato;
-	private long tidspunkt;
+	private LocalDate returdato;
+	private LocalTime tidspunkt;
 	private int kilometerstand;
 	
-	public Retur(Date returdato, int kilometerstand) {
+	public Retur(int kilometerstand) {
 		super();
-		this.returdato = returdato;
-		this.tidspunkt = System.currentTimeMillis();
+		this.returdato = LocalDate.now();
+		this.tidspunkt = LocalTime.now();
 		this.kilometerstand = kilometerstand;
 	}
 
-	public Date getReturdato() {
+	public LocalDate getReturdato() {
 		return returdato;
 	}
 
-	public long getTidspunkt() {
+	public LocalTime getTidspunkt() {
 		return tidspunkt;
 	}
 

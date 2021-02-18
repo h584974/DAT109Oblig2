@@ -1,6 +1,7 @@
 package dokumenter;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import aktorer.Bil;
@@ -13,14 +14,14 @@ public class Reservasjon {
 	private static final int returgebyr = 1000;
 	
 	private Bil bil;
-	private Date utleieDato;
-	private long utleieTidspunkt;
+	private LocalDate utleieDato;
+	private LocalTime utleieTidspunkt;
 	private int antallDager;
 	private Leiekontor utleiekontor;
 	private Leiekontor leveringkontor;
 	private int pris;
 	
-	public Reservasjon(Bil bil, Date utleieDato, long utleieTidspunkt, int antallDager, Leiekontor utleiekontor, Leiekontor leveringskontor) {
+	public Reservasjon(Bil bil, LocalDate utleieDato, LocalTime utleieTidspunkt, int antallDager, Leiekontor utleiekontor, Leiekontor leveringskontor) {
 		super();
 		this.bil = bil;
 		this.utleieDato = utleieDato;
@@ -35,11 +36,11 @@ public class Reservasjon {
 		return bil;
 	}
 
-	public Date getUtleieDato() {
+	public LocalDate getUtleieDato() {
 		return utleieDato;
 	}
 
-	public long getUtleieTidspunkt() {
+	public LocalTime getUtleieTidspunkt() {
 		return utleieTidspunkt;
 	}
 
