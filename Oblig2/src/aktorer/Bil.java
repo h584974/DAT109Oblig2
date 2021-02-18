@@ -1,5 +1,7 @@
 package aktorer;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import dokumenter.Reservasjon;
@@ -88,6 +90,47 @@ public class Bil {
 		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
 		
 		return reservasjoner.stream().anyMatch(r -> r.getBil().getRegistreringsnummer() == registreringsnummer);
+		
+	}
+	
+	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidpunkt, int antallDager) {
+		
+		List<Bil> biler = Billiste.billiste;
+		List<Bil> ledigeBiler = new ArrayList<Bil>();
+		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
+		
+		reservasjoner.forEach(r -> {
+			
+			int datoforskjell = r.getUtleieDato().compareTo(dato);
+
+			if(r.getUtleieDato().before(dato)) {
+				
+				if(datoforskjell > r.getAntallDager()) {
+					
+					if(r.getLeveringkontor().getKontornummer() == utleiekontor.getKontornummer()) {
+						ledigeBiler.add(r.getBil());
+					}
+					
+				}
+				
+			}
+			else if(r.getUtleieDato().after(dato)) {
+				
+				if(datoforskjell > antallDager) {
+					
+					if(r.getUtleiekontor().getKontornummer() == leveringskontor.getKontornummer()) {
+						ledigeBiler.add(r.getBil());
+					}
+					
+				}
+				
+			}
+			
+		});
+		
+		biler.stream().filter(b -> !b.erReservert()).forEach(b -> ledigeBiler.add(b));
+		
+		return ledigeBiler;
 		
 	}
 	

@@ -1,10 +1,8 @@
 package aktorer;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import dokumenter.Reservasjon;
 import utils.Kundeliste;
 import utils.Leiekontorliste;
 import utils.RegnUtleiePris;
@@ -60,7 +58,7 @@ public class Utleieselskap {
 	
 	public List<Bil> sokBil(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidspunkt, int antallDager) {
 		
-		List<Bil> ledigeBiler = getLedigeBiler(utleiekontor,leveringskontor,dato,tidspunkt,antallDager);
+		List<Bil> ledigeBiler = Bil.getLedigeBiler(utleiekontor,leveringskontor,dato,tidspunkt,antallDager);
 ;		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
 		
 		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
@@ -73,53 +71,5 @@ public class Utleieselskap {
 		return ledigeBiler;
 		
 	}
-	
-	private List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, Date dato, long tidpunkt, int antallDager) {
-		
-		List<Bil> biler = Billiste.billiste;
-		List<Bil> ledigeBiler = new ArrayList<Bil>();
-		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
-		
-		reservasjoner.forEach(r -> {
-			
-			int datoforskjell = r.getUtleieDato().compareTo(dato);
-
-			if(r.getUtleieDato().before(dato)) {
-				
-				if(datoforskjell > r.getAntallDager()) {
-					
-					if(r.getLeveringkontor().getKontornummer() == utleiekontor.getKontornummer()) {
-						ledigeBiler.add(r.getBil());
-					}
-					
-				}
-				
-			}
-			else if(r.getUtleieDato().after(dato)) {
-				
-				if(datoforskjell > antallDager) {
-					
-					if(r.getUtleiekontor().getKontornummer() == leveringskontor.getKontornummer()) {
-						ledigeBiler.add(r.getBil());
-					}
-					
-				}
-				
-			}
-			
-		});
-		
-		biler.stream().filter(b -> !b.erReservert()).forEach(b -> ledigeBiler.add(b));
-		
-		return ledigeBiler;
-		
-	}
 
 }
-
-
-
-
-
-
-
