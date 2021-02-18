@@ -87,13 +87,13 @@ public class Utleieselskap {
 		
 	}
 	
-	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveirngskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
+	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		if(kunde.harReservasjon()) {
 			return false;
 		}
 		
-		Reservasjon reservasjon = new Reservasjon(bil, dato, tidspunkt, antallDager, leveirngskontor, leveirngskontor);
+		Reservasjon reservasjon = new Reservasjon(bil, dato, tidspunkt, antallDager, utleiekontor, leveringskontor);
 		kunde.setReservasjon(reservasjon);
 		
 		return true;

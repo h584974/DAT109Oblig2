@@ -1,12 +1,16 @@
 package bruker;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import aktorer.Bil;
 import aktorer.Kunde;
 import aktorer.Leiekontor;
 import aktorer.Utleieselskap;
 import utils.AktivUtleieselskap;
+import utils.Utleiegruppe;
 
 public class Brukergrensesnitt {
 	
@@ -17,6 +21,10 @@ public class Brukergrensesnitt {
 	public void start() {
 		
 		loggInn();
+		
+		reserverBil();
+		
+		scanner.close();
 		
 	}
 	
@@ -63,15 +71,14 @@ public class Brukergrensesnitt {
 		 
 	}
 	
-	private void sokBil() {
+	private void reserverBil() {
 		
 		List<Leiekontor> kontorer = selskap.getLeiekontorer();
 		
-		// Tar inn brukerinput for utleiekontor
 		System.out.println("Skriv tallet på ønsket leiekontor for henting: ");
-		
+		Leiekontor utleiekontor = null;
 		int valg = -1;
-		while(valg < 0) {
+		while(utleiekontor == null) {
 			
 			for(int i = 0; i < kontorer.size(); i++) {
 				System.out.println((i + 1) + ": " + kontorer.get(i).getAddresse().getPoststed());
@@ -85,16 +92,16 @@ public class Brukergrensesnitt {
 			if(valg < 0 || valg >= kontorer.size()) {
 				System.out.println("Ugyldig valg, prøv igjen: ");
 			}
+			else {
+				utleiekontor = kontorer.get(valg);
+			}
 			
 		}
 		
-		Leiekontor leiekontor = kontorer.get(valg);
-		
-		// Tar inn brukerinput for leveringskontor
 		System.out.println("Skriv tallet på ønsket leiekontor for levering: ");
-		
+		Leiekontor leveringskontor = null;
 		valg = -1;
-		while(valg < 0) {
+		while(leveringskontor == null) {
 			
 			for(int i = 0; i < kontorer.size(); i++) {
 				System.out.println((i + 1) + ": " + kontorer.get(i).getAddresse().getPoststed());
@@ -108,13 +115,108 @@ public class Brukergrensesnitt {
 			if(valg < 0 || valg >= kontorer.size()) {
 				System.out.println("Ugyldig valg, prøv igjen: ");
 			}
+			else {
+				leveringskontor = kontorer.get(valg);
+			}
 			
 		}
 		
-		Leiekontor leveringskontor = kontorer.get(valg);
+		System.out.println("Skriv dato for utleie");
+		LocalDate utleiedato = null;
+		while(utleiedato == null) {
+			
+			try {
+				System.out.println("År: ");
+				int aar = Integer.parseInt(scanner.next());
+				System.out.println("Månde: ");
+				int maande = Integer.parseInt(scanner.next());
+				System.out.println("Dag: ");
+				int dag = Integer.parseInt(scanner.next());
+				
+				utleiedato = LocalDate.of(aar, maande, dag);
+			}
+			catch(Throwable e) {}
+			
+		}
 		
+		System.out.println("Velg klokkeslett for henting");
+		LocalTime tidspunkt = null;
+		while(tidspunkt == null) {
+			
+			try {
+				System.out.println("Time: ");
+				int time = Integer.parseInt(scanner.next());
+				System.out.println("Minutt: ");
+				int minutt = Integer.parseInt(scanner.next());
+				
+				tidspunkt = LocalTime.of(time, minutt);
+			}
+			catch(Throwable e) {}
+			
+		}
 		
+		System.out.println("Skriv antall dager for leie: ");
+		int antallDager = 0;
+		while(antallDager < 1) {
+			
+			try {
+				antallDager = Integer.parseInt(scanner.next());
+			}
+			catch(NumberFormatException e) {}
+			
+			if(antallDager < 1) {
+				System.out.println("Ugyldig valg av antall dager, prøv igjen: ");
+			}
+			
+		}
+		
+		List<Bil> biler = selskap.sokBil(utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager);
+		Bil bil = velgBil(biler);
+		selskap.reserverBil(kunde, bil, utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager);
+		
+	}
+	
+	private Bil velgBil(List<Bil> biler) {
+		
+		List<Utleiegruppe> ledigeGrupper = biler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
+		
+		System.out.println("Skriv tall på ønsket bilgruppe: ");
+		for(int i = 0; i < ledigeGrupper.size(); i++) {
+			System.out.println((i + 1) + ": " + ledigeGrupper.get(i));
+		}
+		
+		Utleiegruppe valgtGruppe = null;
+		while(valgtGruppe == null) {
+			
+			try {
+				int valg = Integer.parseInt(scanner.next()) - 1;
+				valgtGruppe = ledigeGrupper.get(valg);
+			}
+			catch(Throwable e) {}
+			
+		}
+		
+		Bil bil = null;
+		for(int i = 0; i < biler.size(); i++) {
+			
+			if(biler.get(i).getUtleiegruppe() == valgtGruppe) {
+				bil = biler.get(i);
+				break;
+			}
+			
+		}
+		
+		return bil;
 		
 	}
 
 }
+
+
+
+
+
+
+
+
+
