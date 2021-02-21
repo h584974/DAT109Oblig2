@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import dokumenter.Reservasjon;
-import utils.AktivUtleieselskap;
 import utils.Utleiegruppe;
 
 public class Bil {

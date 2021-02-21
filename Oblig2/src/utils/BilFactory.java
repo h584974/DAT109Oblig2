@@ -24,6 +24,8 @@ public class BilFactory {
 		
 		List<Leiekontor> kontorer = AktivUtleieselskap.selskap.getLeiekontorer();
 		
+		kontorer.forEach(k -> k.getBiler().removeIf(b -> b.getRegistreringsnummer() > -1));
+		
 		kontorer.get(0).leggTilBil(bil1);
 		kontorer.get(0).leggTilBil(bil7);
 		kontorer.get(0).leggTilBil(bil12);

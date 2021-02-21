@@ -87,9 +87,11 @@ public class Utleieselskap {
 		}
 		
 		Reservasjon reservasjon = kunde.getReservasjon();
-		Utleie utleie = new Utleie(kredittkort, reservasjon.getBil().getKilometerstand(),forventetReturdato,forventetReturtidspunkt);
+		Bil bil = reservasjon.getBil();
+		Utleie utleie = new Utleie(kredittkort,bil.getKilometerstand(),forventetReturdato,forventetReturtidspunkt);
 		kunde.setUtleie(utleie);
-		reservasjon.getUtleiekontor().fjernBil(reservasjon.getBil());
+		reservasjon.getUtleiekontor().fjernBil(bil);
+		bil.setLedig(false);
 				
 		return true;
 		
@@ -102,9 +104,11 @@ public class Utleieselskap {
 		}
 		
 		Reservasjon reservasjon = kunde.getReservasjon();
-		Retur retur = new Retur(reservasjon.getBil().getKilometerstand());
+		Bil bil = reservasjon.getBil();
+		Retur retur = new Retur(bil.getKilometerstand());
 		kunde.leggTilRetur(retur);
-		reservasjon.getLeveringkontor().leggTilBil(reservasjon.getBil());
+		reservasjon.getLeveringkontor().leggTilBil(bil);
+		bil.setLedig(true);
 		kunde.setUtleie(null);
 		kunde.setReservasjon(null);
 		
