@@ -6,6 +6,9 @@ import aktorer.Leiekontor;
 
 public class Leiekontorliste {
 	
+	/**
+	 * Liste over alle leiekontorene til utleieselskapet.
+	 */
 	public static List<Leiekontor> leiekontorliste = Arrays.asList(
 			new Leiekontor(1,21212121,new Addresse("Fleslandsveien", 2, 5400,"BERGEN")),
 			new Leiekontor(2,31313131,new Addresse("Oslogaten", 50, 2300,"OSLO")),

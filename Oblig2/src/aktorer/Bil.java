@@ -74,6 +74,10 @@ public class Bil {
 		this.ledig = ledig;
 	}
 	
+	/**
+	 * Sjekker om en bil er reservert.
+	 * @return Returnerer true hvis bilen er reservert, og false ellers.
+	 */
 	public boolean erReservert() {
 		
 		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
@@ -86,6 +90,15 @@ public class Bil {
 		return farge + " " + merke;
 	}
 	
+	/**
+	 * Finner alle ledige biler ut ifra søkebetingelsene.
+	 * @param utleiekontor Leiekontor bilen hentes fra.
+	 * @param leveringskontor Leiekontor bilen leveres til.
+	 * @param dato Dato for henting av bil.
+	 * @param tidspunkt Tidspunkt for henting av bil.
+	 * @param antallDager Antall dager bilen skal leies.
+	 * @return Liste av ledige biler som matcher betingelsene.
+	 */
 	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		List<Bil> ledigeBiler = new ArrayList<Bil>();

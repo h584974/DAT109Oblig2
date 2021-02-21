@@ -47,10 +47,18 @@ public class Leiekontor {
 		return biler;
 	}
 	
+	/**
+	 * Legger til en bil i dette leiekontoret.
+	 * @param bil Bil som skal legges til.
+	 */
 	public void leggTilBil(Bil bil) {
 		biler.add(bil);
 	}
 	
+	/**
+	 * Fjerner en bil fra dette leiekontoret.
+	 * @param bil Bil som skal fjernes.
+	 */
 	public void fjernBil(Bil bil) {
 		
 		int bilNr = bil.getRegistreringsnummer();

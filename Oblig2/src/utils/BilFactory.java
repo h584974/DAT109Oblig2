@@ -7,6 +7,9 @@ import aktorer.Leiekontor;
 
 public class BilFactory {
 	
+	/**
+	 * Produserer alle bilene til utleieselskapet, som lagres i de forskjellige spesifiserte utleiekontorene.
+	 */
 	public static void lagBiler() {
 		
 		Bil bil1 = new Bil(11111,400,Utleiegruppe.A,"Volkswagen","Svart");

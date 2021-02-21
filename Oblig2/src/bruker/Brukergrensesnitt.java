@@ -20,6 +20,9 @@ public class Brukergrensesnitt {
 	private final Utleieselskap selskap = AktivUtleieselskap.selskap;
 	private Kunde kunde = null;
 	
+	/**
+	 * Starter kjøringen av brukergrensesnittet.
+	 */
 	public void start() {
 		
 		loggInn();
@@ -36,6 +39,9 @@ public class Brukergrensesnitt {
 		
 	}
 	
+	/**
+	 * Logger inn som kunde, avslutter programmet om innlogging ikke er vellykket.
+	 */
 	private void loggInn() {
 		
 		String fornavn = null;
@@ -79,6 +85,10 @@ public class Brukergrensesnitt {
 		 
 	}
 	
+	/**
+	 * Reserverer en bil for kunden som er innlogget. Ber kunden om brukerdata for å kunne søke ledige passende biler
+	 * og reservere ønsket bil.
+	 */
 	private void reserverBil() {
 		
 		List<Leiekontor> kontorer = selskap.getLeiekontorer();
@@ -191,6 +201,11 @@ public class Brukergrensesnitt {
 		
 	}
 	
+	/**
+	 * Ber kunde velge sin ønskede bilgruppe.
+	 * @param biler
+	 * @return Returnerer en bil av ønsket gruppe.
+	 */
 	private Bil velgBil(List<Bil> biler) {
 		
 		List<Utleiegruppe> ledigeGrupper = biler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
@@ -225,6 +240,9 @@ public class Brukergrensesnitt {
 		
 	}
 	
+	/**
+	 * Henter reservert bil for innlogget kunde. Ber kunde om brukerdata som lagres i Utleie-Objekt.
+	 */
 	public void hentBil() {
 		
 		System.out.println("\n--HENTER BIL --\nSkriv inn kredittkortnummer: ");
@@ -267,6 +285,9 @@ public class Brukergrensesnitt {
 		
 	}
 	
+	/**
+	 * Returnerer innlogget kunde sin utleide bil.
+	 */
 	private void returnerBil() {
 		
 		if(selskap.returnerBil(kunde)) {
@@ -278,6 +299,9 @@ public class Brukergrensesnitt {
 		
 	}
 	
+	/**
+	 * Utfører simulering av å ha kjørt den utleide bilen for innlogget kunde.
+	 */
 	private void kjorBil() {
 		
 		if(kunde.harUtleie()) {
@@ -316,12 +340,3 @@ public class Brukergrensesnitt {
 	}
 
 }
-
-
-
-
-
-
-
-
-

@@ -54,6 +54,12 @@ public class Utleieselskap {
 		return leiekontorer;
 	}
 
+	/**
+	 * Logger inn som en kunde ved bruk av fornavn og etternavn.
+	 * @param fornavn Kundens fornavn
+	 * @param etternavn Kundens etternavn
+	 * @return Returnerer et Kunde-objekt som tilsvarer navnene, ellers null.
+	 */
 	public Kunde loggInn(String fornavn, String etternavn) {
 		
 		Kunde kunde = null;
@@ -67,6 +73,17 @@ public class Utleieselskap {
 		
 	}
 	
+	/**
+	 * Reserverer en bil for en kunde, ved gitte detaljer.
+	 * @param kunde Kunden som reserverer en bil.
+	 * @param bil Bilen som kunden reserverer.
+	 * @param utleiekontor Leiekontoret bilen skal hentes fra.
+	 * @param leveringskontor Leiekontoret bilen skal leveres til.
+	 * @param dato Datoen bilen hentes på.
+	 * @param tidspunkt Tidspunktet bilen hentes på.
+	 * @param antallDager Antall dager bilen skal leies.
+	 * @return Returnerer true om bilen ble reservert vellykket, false ellers.
+	 */
 	public boolean reserverBil(Kunde kunde, Bil bil, Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		if(kunde.harReservasjon()) {
@@ -80,6 +97,14 @@ public class Utleieselskap {
 		
 	}
 	
+	/**
+	 * Utfører utleie av en bil for en kunde ved henting av reservert bil.
+	 * @param kunde Kunden som henter sin reserverte bil.
+	 * @param kredittkort Kredittkortnummeret til kunden oppgis og lagres.
+	 * @param forventetReturdato Forventet dato for retur.
+	 * @param forventetReturtidspunkt Forventet tidspunkt for retur.
+	 * @return Returnerer true om bilen ble utleid vellykket, false ellers.
+	 */
 	public boolean hentBil(Kunde kunde, int kredittkort, LocalDate forventetReturdato, LocalTime forventetReturtidspunkt) {
 		
 		if(!kunde.harReservasjon()) {
@@ -97,6 +122,11 @@ public class Utleieselskap {
 		
 	}
 	
+	/**
+	 * Utfører retur av en utleid bil for en kunde.
+	 * @param kunde Kunde som skal levere bil.
+	 * @return Returnerer true om bilen ble returnert vellykket, false ellers.
+	 */
 	public boolean returnerBil(Kunde kunde) {
 		
 		if(!kunde.harUtleie()) {

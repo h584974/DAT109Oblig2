@@ -60,12 +60,26 @@ public class Reservasjon {
 		return pris;
 	}
 	
+	/**
+	 * Henter alle eksisterende reservasjoner. Går gjennom liste av alle kunder og sjekker om de
+	 * har en reservasjon og samler så alle reservasjoner i en liste som returneres.
+	 * @return Returnerer en liste av reservasjoner.
+	 */
 	public static List<Reservasjon> getAlleReservasjoner() {
 		
 		return Kundeliste.kundeliste.stream().filter(k -> k.harReservasjon()).map(k -> k.getReservasjon()).collect(Collectors.toList());
 		
 	}
 	
+	/**
+	 * Regner ut utleiepris for en gitt bilgruppe og et gitt antall dager for utleie, pluss et gebyr om bilen
+	 * skal leveres på et annet leiekontor enn den befinner seg ved utleie.
+	 * @param gruppe Utleiegruppe som pris beregnes for.
+	 * @param utleiekontor Leiekontoret bilen skal hentes fra.
+	 * @param leveringskontor Leiekontoret bilen skal leveres til.
+	 * @param antallDager Antall dager bilen skal leies.
+	 * @return Returnerer den beregnete prisen for utleie.
+	 */
 	public static int regnPris(Utleiegruppe gruppe, Leiekontor utleiekontor, Leiekontor leveringskontor, int antallDager) {
 		
 		int totalpris = 0;
@@ -96,6 +110,13 @@ public class Reservasjon {
 			
 	}
 	
+	/**
+	 * Skriver ut beregnet pris for hver av gruppene som er gitt ved parameter.
+	 * @param ledigeBiler Liste over ledige biler som kan leies.
+	 * @param utleiekontor Leiekontoret bilen skal hentes fra.
+	 * @param leveringskontor Leiekontoret bilen skal leveres til.
+	 * @param antallDager Antall dager bilen skal leies.
+	 */
 	public static void skrivPris(List<Bil> ledigeBiler, Leiekontor utleiekontor, Leiekontor leveringskontor, int antallDager) {
 		
 		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
