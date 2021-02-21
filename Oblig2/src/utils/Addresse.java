@@ -46,5 +46,9 @@ public class Addresse {
 	public void setPoststed(String poststed) {
 		this.poststed = poststed;
 	}
+	
+	@Override public String toString() {
+		return gatenavn + " " + gatenummer + ", " + poststed;
+	}
 
 }

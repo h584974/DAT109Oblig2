@@ -83,23 +83,36 @@ public class Bil {
 		
 	}
 	
-	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidpunkt, int antallDager) {
+	@Override public String toString() {
+		return farge + " " + merke;
+	}
+	
+	public static List<Bil> getLedigeBiler(Leiekontor utleiekontor, Leiekontor leveringskontor, LocalDate dato, LocalTime tidspunkt, int antallDager) {
 		
 		List<Bil> ledigeBiler = new ArrayList<Bil>();
 		List<Reservasjon> reservasjoner = Reservasjon.getAlleReservasjoner();
 			
 		utleiekontor.getBiler().stream().filter(b -> !b.erReservert()).forEach(b -> ledigeBiler.add(b));
 		
+		// Logikken er basert på antagelsen at utleietidspunkt er samme som leveringstidspunkt, ettersom vi ikke vet leveringstidspunkt
+		// før bilen faktisk blir hentet og Utleie-objektet blir opprettet.
 		reservasjoner.forEach(r -> {
 			
 			int datoforskjell = Math.abs(r.getUtleieDato().compareTo(dato));
 
 			if(r.getUtleieDato().isBefore(dato)) {
 				
-				if(datoforskjell > r.getAntallDager()) {
+				if(r.getLeveringkontor().getKontornummer() == utleiekontor.getKontornummer()) {
 					
-					if(r.getLeveringkontor().getKontornummer() == utleiekontor.getKontornummer()) {
+					if(datoforskjell > r.getAntallDager()) {
 						ledigeBiler.add(r.getBil());
+					}
+					else if(datoforskjell == r.getAntallDager()) {
+						
+						if(r.getUtleieTidspunkt().isBefore(tidspunkt)) {
+							ledigeBiler.add(r.getBil());
+						}
+						
 					}
 					
 				}
@@ -107,10 +120,17 @@ public class Bil {
 			}
 			else if(r.getUtleieDato().isAfter(dato)) {
 				
-				if(datoforskjell > antallDager) {
+				if(r.getUtleiekontor().getKontornummer() == leveringskontor.getKontornummer()) {
 					
-					if(r.getUtleiekontor().getKontornummer() == leveringskontor.getKontornummer()) {
+					if(datoforskjell > antallDager) {
 						ledigeBiler.add(r.getBil());
+					}
+					else if(datoforskjell == antallDager) {
+						
+						if(r.getUtleieTidspunkt().isAfter(tidspunkt)) {
+							ledigeBiler.add(r.getBil());
+						}
+						
 					}
 					
 				}

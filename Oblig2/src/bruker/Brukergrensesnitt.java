@@ -3,6 +3,7 @@ package bruker;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import aktorer.Bil;
@@ -24,6 +25,10 @@ public class Brukergrensesnitt {
 		loggInn();
 		
 		reserverBil();
+		
+		hentBil();
+		
+		kjorBil();
 
 		returnerBil();
 		
@@ -84,7 +89,7 @@ public class Brukergrensesnitt {
 		while(utleiekontor == null) {
 			
 			for(int i = 0; i < kontorer.size(); i++) {
-				System.out.println((i + 1) + ": " + kontorer.get(i).getAddresse().getPoststed());
+				System.out.println((i + 1) + ": " + kontorer.get(i).getAddresse());
 			}
 			
 			try {
@@ -178,7 +183,7 @@ public class Brukergrensesnitt {
 		Bil bil = velgBil(biler);
 		
 		if(selskap.reserverBil(kunde, bil, utleiekontor, leveringskontor, utleiedato, tidspunkt, antallDager)) {
-			System.out.println("Bil ble reservert.");
+			System.out.println("Bil (" + bil + ") ble reservert.");
 		}
 		else {
 			System.out.println("Det skjedde en feil, bil kunne ikke reserveres");
@@ -222,7 +227,7 @@ public class Brukergrensesnitt {
 	
 	public void hentBil() {
 		
-		System.out.println("Skriv inn kredittkortnummer: ");
+		System.out.println("\n--HENTER BIL --\nSkriv inn kredittkortnummer: ");
 		int kredittkort = -1;
 		while(kredittkort < 0) {
 			
@@ -269,6 +274,43 @@ public class Brukergrensesnitt {
 		}
 		else {
 			System.out.println("Det skjedde en feil, kunne ikke levere bil.");
+		}
+		
+	}
+	
+	private void kjorBil() {
+		
+		if(kunde.harUtleie()) {
+			
+			Random r = new Random();
+			int kilometer = r.nextInt(1801) + 200;
+			Bil bil = kunde.getReservasjon().getBil();
+			bil.setKilometerstand(bil.getKilometerstand() + kilometer);
+			
+			System.out.print("Kjører bil ");
+			
+			for(int i = 0; i < 5; i++) {
+				
+				try {
+					Thread.sleep(350);
+				} catch (InterruptedException e) {}
+				
+				for(int n = 0; n < 3; n++) {
+					
+					try {
+						Thread.sleep(120);
+					} catch (InterruptedException e) {}
+					
+					System.out.print(".");
+					
+				}
+				
+				System.out.print("VROOM");
+				
+			}
+			
+			System.out.println();
+			
 		}
 		
 	}

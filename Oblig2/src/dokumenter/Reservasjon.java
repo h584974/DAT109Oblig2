@@ -100,7 +100,7 @@ public class Reservasjon {
 		
 		List<Utleiegruppe> ledigeGrupper = ledigeBiler.stream().map(b -> b.getUtleiegruppe()).distinct().collect(Collectors.toList());
 		
-		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --\n");
+		System.out.println("-- LEDIGE GRUPPER OG BEREGNET PRIS --");
 		
 		ledigeGrupper.forEach(g -> {
 			
