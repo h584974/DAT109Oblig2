@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import aktorer.*;
 
-public class TestSetup {
+public class BilTestSetup {
 	
 	private Kunde ledigKunde;
 	private Kunde reservertKunde;
@@ -13,9 +13,7 @@ public class TestSetup {
 	private Bil reservertBil;
 	private Bil levertBil;
 	
-	public TestSetup() {
-		
-		BilFactory.lagBiler();
+	public BilTestSetup() {
 		
 		reservertKunde = Kundeliste.kundeliste.get(0);
 		levertKunde = Kundeliste.kundeliste.get(1);

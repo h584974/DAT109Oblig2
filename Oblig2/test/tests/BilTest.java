@@ -4,20 +4,27 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import aktorer.Bil;
 import aktorer.Leiekontor;
 import utils.AktivUtleieselskap;
-import utils.TestSetup;
+import utils.BilFactory;
+import utils.BilTestSetup;
 
 public class BilTest {
 	
-	private TestSetup setup;
+	private BilTestSetup setup;
+	
+	@BeforeAll
+	public static void lagBiler() {
+		BilFactory.lagBiler();
+	}
 	
 	@BeforeEach
 	public void setup() {
-		setup = new TestSetup();
+		setup = new BilTestSetup();
 	}
 	
 	@Test
